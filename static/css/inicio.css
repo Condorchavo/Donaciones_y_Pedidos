@@ -1,0 +1,45 @@
+#map {
+    height: 650px;
+    width: 70%;
+    position:relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 10px;
+    font-size: 12px;
+}
+
+#map-legend {
+    float: left; /* Agregamos float: left para que map-legend y el botón estén uno al lado del otro */
+    padding: 10px;
+    background-color: #FEFDE8;
+}
+
+#locate-button {
+    display: inline-block; /* Mantenemos el botón como inline-block para centrarlo verticalmente */
+    margin: auto; /* Ajustamos el margen para separar el botón de map-legend */
+}
+
+.legend-item{
+    float: left; padding-right: 4pt;
+}
+
+#donacion-legend{
+    width: 20px; 
+    height: 20px; 
+    background-color: #CB2B3E; 
+    float: left
+}
+
+#pedido-legend{
+    width: 20px; 
+    height: 20px; 
+    background-color: #9C2BCB; 
+    float: left;
+}
+
+.legend-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

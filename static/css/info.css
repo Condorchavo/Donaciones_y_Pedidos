@@ -1,0 +1,121 @@
+li.detailed {
+  overflow-wrap: break-word;
+  width: 80%;
+  border: 1px solid black;
+  border-radius: 12px;
+  height: 50%;
+  margin: 2% auto;
+  padding: 2rem;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  background-color: rgb(189, 188, 188);
+  }
+
+ul.principal {
+  margin: 2% auto;
+  padding: 2rem;
+  padding-top: .5rem;
+  border-radius: 20px;
+  width: 80%;
+  background-color:#faf8e3;
+  list-style-type: none;
+}
+
+h1.titulo {
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.borrar-donacion{
+  position:relative;
+  display: block;
+  border-collapse: collapse;
+  background-color: #7e21a3c2;
+  border: none;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 20px;
+  padding: 0.5%;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.borrar-pedido{
+  position:relative;
+  display: block;
+  border-collapse: collapse;
+  background-color: #7e21a3c2;
+  border: none;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 20px;
+  padding: 0.5%;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.volver-tabla {
+  position:relative;
+  display: block;
+  border-collapse: collapse;
+  background-color: #7e21a3c2;
+  border: none;
+  border-radius: 8px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  font-size: 20px;
+  padding: 0.5%;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.container .popup-image{
+  position: fixed;
+  top:0;
+  left: 0;
+  background: rgba(0,0,0,.9);
+  height: 100%;
+  width: 100%;
+  z-index: 100;
+  display: none;
+}
+
+.container .popup-image span{
+  position: absolute;
+  top:0;
+  right: 10px;
+  font-size: 50px;
+  font-weight: bolder;
+  color: #fff;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.container img:not(.popup-image){
+  width: 640px;
+  height: 480px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 4px;
+  border: 2px solid rgb(121, 121, 121);
+}
+.container .popup-image img{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+  border: 3px solid #fff;
+  border-radius: 5px;
+  height: 85%;
+  width: auto;
+  /* width: 1280px;
+  height: 1024px; */
+}

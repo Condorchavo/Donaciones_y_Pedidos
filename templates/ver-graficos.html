@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/graficos.css') }}">    
+{%endblock css %}
+
+{% block title %}Gráficos{% endblock title %}
+
+{% block content %}    
+<div class="stats-container">
+    <br>
+    <div id="donacion-chart" class="graficos"></div>
+    <br>
+    <div id="pedidos-chart" class="graficos"></div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<script src="{{url_for('static', filename='js/grafico_donacion.js')}}"></script>
+<script src="{{url_for('static', filename='js/grafico_pedido.js')}}"></script>
+{% endblock scripts %}

@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/info.css') }}">
+{% endblock css %}
+
+{% block title %} Información Donaciones {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <ul class="principal">
+            <li><h1 class="titulo"> Información Donación</h1></li>
+            {% if data %}
+            <li class="detailed">
+                <p> Región: {{data.region}} </p>
+                <p> Comuna: {{data.comuna}} </p>
+                <p> Dirección: {{data.calle}} </p>
+                <p> Tipo de Donación: {{data.tipo}} </p>
+                <p> Cantidad: {{data.cantidad}} </p>
+                <p> Fecha Disponibilidad: {{data.fecha}} </p>
+                <p> Descripción: {{data.descripcion}} </p>
+                <p> Condiciones para Retirar: {{data.condiciones}}</p>
+                <p> Foto(s) Donación: <br>
+                    {% for foto in data.fotos %}
+                        <img src="{{foto}}" alt="Foto Donación" width="300" height="300">
+                    {% endfor %}
+                </p>
+                <p> Nombre Donante: {{data.nombre}} </p>
+                <p> Email Donante: {{data.email}} </p>
+                <p> Número de Contacto del Donante: {{data.celular}} </p>
+            </li>
+            <li> 
+                <div class="redirect-index">
+                    {% if id_donacion %}
+                        <button type="button" class="borrar-donacion" onclick="eliminarDonacion('{{ id_donacion }}');">
+                            Cancelar Donación
+                        </button>
+                    {% endif %}
+                    <button type="button" class="volver-tabla" onclick="window.location.href='ver-donaciones';">
+                        Volver a la Tabla de Donaciones
+                    </button>
+                </div>
+            </li>
+            {% endif %}
+        </ul>
+        <div class="popup-image">
+            <span>&times;</span>
+            <img src="" alt="">
+        </div>  
+    </div>
+    <script>
+        document.querySelectorAll('img').forEach(image => {
+            image.addEventListener('click', () => {
+                document.querySelector('.popup-image').style.display = "block";
+                document.querySelector('.popup-image img').src = image.getAttribute('src');
+            });
+        });
+        document.querySelector('.popup-image span').addEventListener('click', () => {
+            document.querySelector('.popup-image').style.display = "none";
+        });
+    </script>
+
+    <script>
+        function eliminarDonacion(idDonacion) {
+            if (confirm('¿Estás seguro de que deseas cancelar esta donación?')) {
+                // Realizar la solicitud DELETE utilizando JavaScript
+                fetch(`/eliminar-donacion.html?id=${idDonacion}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // La solicitud DELETE fue exitosa, redirige al usuario al enlace obtenido de la respuesta
+                        response.json().then(data => {
+                            if (data.link) {
+                                window.location.href = data.link;
+                            }
+                        });
+                    } else {
+                        // Manejo de errores
+                        alert('Error al cancelar la donación');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        }
+    </script>
+
+
+{% endblock content %}

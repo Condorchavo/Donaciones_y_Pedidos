@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/info.css') }}">
+{% endblock %}
+
+{% block title %} Información Pedidos {% endblock %}
+
+{% block content %}
+    <div class="container">
+        <ul class="principal">
+            <li><h1 class="titulo">Información Pedido</h1></li>
+            <li class="detailed">
+                <p>Región: {{data.region}}</p>
+                <p>Comuna: {{data.comuna}}</p>
+                <p>Tipo de Pedido: {{data.tipo}}</p>
+                <p>Cantidad: {{data.cantidad}}</p>
+                <p>Descripción: {{data.descripcion}}</p>
+                <p>Nombre Donante: {{data.nombre}}</p>
+                <p>Email Contacto: {{data.email}}</p>
+                <p>Número Contacto Celular: {{data.celular}}</p>
+            </li>
+            {% if id_pedido %}
+                <button type="button" class="borrar-pedido" onclick="window.location.href='eliminar-pedido.html?id={{ id_pedido }}';">
+                    Cancelar Pedido
+                </button>
+            {% endif %}
+            <li><div class="redirect-index">
+                <button type="button" class="volver-tabla" onclick="window.location.href='ver-pedidos';" > Volver a tabla de pedidos</button>
+            </div></li>
+        </ul>
+    </div>
+    {% endblock %}

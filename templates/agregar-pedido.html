@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+<head>
+    {% block css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style_agregar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+    {% endblock %}
+    
+    {% block title %} Agregar Pedido {% endblock %}
+</head>
+{% block content %}
+    <div class="container">
+        <div class="logo">
+            <p style="font-size:larger;"> Formulario de Petición </p>
+            {% if errors %}
+                <p>Al intentar cargar su donación a la base de datos se obtuvo los siguientes errores:</p>
+                {% for error in errors %}
+                <li> {{error}}</li>
+                {% endfor %}
+                <br>
+            {% endif %}
+            <p id="bajada"> Por favor llene los siguientes datos para registrar el pedido. </p>
+        </div>
+        <form class="formulario" id="form_pedido" name="form_pedido" action="{{url_for('agregar_pedido')}}" method="post" enctype="multipart/form-data">
+            {% if data %}
+            <div id="region-input" class="grupo-input">
+                <label for="region"> Región</label>
+                <select id="region" name="region" required>
+                    <option value="" selected="selected"> -- Seleccione la Región -- </option>
+                </select>
+                <br><small id="region-error"> Elija una región! </small>
+            </div>
+            <div id="comuna-input" class="grupo-input">
+                <label for="comuna"> Comuna</label>
+                <select id="comuna" name="comuna" required>
+                    <option value="" selected="selected"> -- Seleccione la Comuna -- </option>
+                </select>
+                <br><small id="comuna-error"> Elija una comuna! </small>
+            </div>
+            <div id="tipo-input" class="grupo-input">
+                <label for="tipo"> Tipo de Pedido</label>
+                <select id="tipo" name="tipo" value="{{data.tipo}}" required>
+                    <option value="" selected="">Seleccione el tipo</option>
+                    <option value="fruta">Fruta</option>
+                    <option value="verdura">Verdura</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <br><small id="tipo-error"> Elija el tipo de donación! </small>
+            </div>
+            <div id="descripcion-input" class="grupo-input">
+                <label for="descripcion"> Descripción </label>
+                <input id="descripcion" name="descripcion" type="text" maxlength="250" size="80" value="{{data.descripcion}}" required>
+                <br><small id="descripcion-error"> Describa su pedido! </small>
+            </div>
+            <div id="cantidad-input" class="grupo-input">
+                <label for="cantidad">Cantidad</label>
+                <input id="cantidad" name="cantidad" type="text" size="10" value="{{data.cantidad}}" required>
+                <br><small id="cantidad-error"> Cantidad no válida! </small>
+            </div>
+            <div id="nombre-input" class="grupo-input">
+                <label for="nombre">Nombre Solicitante</label>
+                <input id="nombre" name="nombre" type="text" minlength="3" maxlength="80" size="80" value="{{data.nombre}}" required>
+                <br><small id="nombre-error"> Nombre no válido, debe tener entre 3 y 80 caracteres! </small>
+            </div>
+            <div id="mail-input" class="grupo-input">
+                <label for="email">Email Solicitante</label>
+                <input id="email" name="email" type="email" size="30" value="{{data.email}}" required>
+                <br><small id="email-error"> Mail no válido! </small>
+            </div>
+            <div id="celular-input" class="grupo-input">
+                <label for="celular">Número Celular Solicitante</label>
+                <input id="celular" name="celular" type="tel" placeholder="+56 X XXXX XXXX" value="{{data.celular}}" size="15">
+                <br><small id="celular-error"> Número celular no válido! </small>
+            </div>
+            {% else %}
+            <div id="region-input" class="grupo-input">
+                <label for="region"> Región</label>
+                <select id="region" name="region" required>
+                    <option value="" selected="selected"> -- Seleccione la Región -- </option>
+                </select>
+                <br><small id="region-error"> Elija una región! </small>
+            </div>
+            <div id="comuna-input" class="grupo-input">
+                <label for="comuna"> Comuna</label>
+                <select id="comuna" name="comuna" required>
+                    <option value="" selected="selected"> -- Seleccione la Comuna -- </option>
+                </select>
+                <br><small id="comuna-error"> Elija una comuna! </small>
+            </div>
+            <div id="tipo-input" class="grupo-input">
+                <label for="tipo"> Tipo de Pedido</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="" selected="">Seleccione el tipo</option>
+                    <option value="fruta">Fruta</option>
+                    <option value="verdura">Verdura</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <br><small id="tipo-error"> Elija el tipo de donación! </small>
+            </div>
+            <div id="descripcion-input" class="grupo-input">
+                <label for="descripcion"> Descripción </label>
+                <input id="descripcion" name="descripcion" type="text" maxlength="250" size="80" required>
+                <br><small id="descripcion-error"> Describa su pedido! </small>
+            </div>
+            <div id="cantidad-input" class="grupo-input">
+                <label for="cantidad">Cantidad</label>
+                <input id="cantidad" name="cantidad" type="text" size="10" required>
+                <br><small id="cantidad-error"> Cantidad no válida! </small>
+            </div>
+            <div id="nombre-input" class="grupo-input">
+                <label for="nombre">Nombre Solicitante</label>
+                <input id="nombre" name="nombre" type="text" minlength="3" maxlength="80" size="80" required>
+                <br><small id="nombre-error"> Nombre no válido, debe tener entre 3 y 80 caracteres! </small>
+            </div>
+            <div id="mail-input" class="grupo-input">
+                <label for="email">Email Solicitante</label>
+                <input id="email" name="email" type="email" size="30" required>
+                <br><small id="email-error"> Mail no válido! </small>
+            </div>
+            <div id="celular-input" class="grupo-input">
+                <label for="celular">Número Celular Solicitante</label>
+                <input id="celular" name="celular" type="tel" placeholder="+56 X XXXX XXXX" size="15">
+                <br><small id="celular-error"> Número celular no válido! </small>
+            </div>
+            {% endif %}
+            <div class="botones">
+                <button type="button" id="envio" onclick="validarForm()">
+                Agregar Pedido
+                </button>
+            </div>
+        </form>
+      </div>
+{% endblock%}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/regionesycomunas.js') }}"></script> 
+    <script src="{{ url_for('static', filename='js/validador_pedido.js') }}"></script>
+{% endblock scripts %}

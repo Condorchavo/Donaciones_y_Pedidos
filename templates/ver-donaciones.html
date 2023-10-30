@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table_donaciones.css') }}">
+{% endblock %}
+
+{% block title %} Ver Donaciones {% endblock %}
+
+{% block content %}
+<script>
+    let btn_resta = document.getElementById("btn-resta");
+    let btn_suma = document.getElementById("btn-suma");
+    let contador = document.getElementById("contador");
+    let n = 0; // contador
+    const suma = () => {
+        n++;
+        contador.innerText = n;
+    };
+    const resta = () => {
+        n--;
+        contador.innerText = n;
+    };
+    // asignar respectivamente la funciones al evento "click"
+    btn_suma.addEventListener("click", suma);
+    btn_resta.addEventListener("click", resta);
+</script>
+    <div class="div-table-donaciones">
+        <table class="table-donaciones">
+            <tr>
+                <th>Comuna</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Foto</th>
+            </tr>
+            {%if data %}
+                {% for donacion in data %}
+                <tr onclick="window.location.href='informacion-donacion.html?id={{ donacion.id }}';">
+                    <td>{{donacion.comuna}}</td>
+                    <td>{{donacion.tipo}}</td>
+                    <td>{{donacion.cantidad}}</td>
+                    <td>{{donacion.fecha}}</td>
+                    <td>{{donacion.nombre}}</td>
+                    <td>
+                        {%for foto in donacion.fotos %}
+                        <img src="{{foto}}" alt="Foto Donación" width="300" height="300"> <!-- height=120 width=120 -->
+                        {%endfor%}
+                    </td>
+                </tr>
+                {% endfor %}
+            {%endif%}
+        </table>
+        <form action="/ver-donaciones" method="GET">
+            <input type="hidden" name="page" value="{{ page - 1 }}">
+            <button type="submit" {% if page < 2 %}disabled{% endif %}>Página anterior</button>
+        </form>
+        <form action="/ver-donaciones" method="GET">
+            <input type="hidden" name="page" value="{{ page + 1 }}">
+            <button type="submit" {% if remaining < 5 %}disabled{% endif %}>Siguiente página</button>
+        </form>
+    </div>
+    <div class="redirect-index">
+        <button type="button" class="return-to-index" onclick="window.location.href='inicio';" > Volver al Inicio</button>
+    </div>
+{% endblock %}

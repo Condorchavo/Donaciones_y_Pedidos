@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+<head>
+    {% block css %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style_agregar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/popup.css') }}">
+    {% endblock %}
+    
+    {% block title %} Agregar Donación {% endblock %}
+</head>
+{% block content %}
+    <div class="container">
+        <div class="logo">
+            <p style="font-size:larger;"> Formulario de Donación </p>
+            {% if errors %}
+                <p>Al intentar cargar su donación a la base de datos se obtuvo los siguientes errores:</p>
+                {% for error in errors %}
+                <li> {{error}}</li>
+                {% endfor %}
+                <br>
+            {% endif %}
+            <p id="bajada"> Por favor llene los siguientes datos para registrar la donación. </p>
+        </div>
+        <form class="formulario" id="form_donacion" name="form_donacion" action="{{url_for('agregar_donacion')}}" method="post" enctype="multipart/form-data">      
+            
+            {% if data %}
+            <div id="region-input" class="grupo-input">
+                <label for="region"> Región</label>
+                <select id="region" name="region" required>
+                    <option value="" selected="selected"> -- Seleccione la Región -- </option>
+                </select>
+                <br><small id="region-error"> Elija una región! </small>
+            </div>
+            <div id="comuna-input" class="grupo-input">
+                <label for="comuna"> Comuna</label>
+                <select id="comuna" name="comuna" required>
+                    <option value="" selected="selected"> -- Seleccione la Comuna -- </option>
+                </select>
+                <br><small id="comuna-error"> Elija una comuna! </small>
+            </div>
+            <div id="calle-numero-input" class="grupo-input">
+                <label for="calle-numero"> Calle y Número</label>
+                <input id="calle-numero" name="calle-numero" type="text" size="80" value="{{data.calle}}" required>
+                <br><small id="calle-error"> Primero debe insertar el nombre de la calle y luego el número de la vivienda! </small>
+            </div>
+            <div id="tipo-input" class="grupo-input">
+                <label for="tipo"> Tipo de Donación</label>
+                <select id="tipo" name="tipo" value="{{data.tipo}}" required>
+                    <option value="" selected="selected"> Seleccione el tipo </option>
+                    <option value="fruta">Fruta</option>
+                    <option value="verdura">Verdura</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <br><small id="tipo-error"> Elija el tipo de donación! </small>
+            </div>
+            <div id="cantidad-input" class="grupo-input">
+                <label for="cantidad">Cantidad</label>
+                <input id="cantidad" name="cantidad" type="text" size="10" value="{{data.cantidad}}" required>
+                <br><small id="cantidad-error"> Cantidad no válida! </small>
+            </div>
+            <div id="fecha-disponibilidad-input" class="grupo-input">
+                <label for="fecha-disponibilidad">Fecha Disponibilidad</label>
+                <input id="fecha-disponibilidad" name="fecha-disponibilidad" type="text" maxlength="10" size="10" value="{{data.fecha}}" placeholder="aaaa-mm-dd" required>
+                <br><small id="fecha-error"> Fecha debe ser mayor o igual a la actual, y con formato aaaa-mm-dd! </small>
+            </div>
+            <div id="descripcion-input" class="grupo-input">
+                <label for="descripcion"> Descripción </label>
+                <input id="descripcion" name="descripcion" type="text" value="{{data.descripcion}}" size="80">
+            </div>
+            <div id="condiciones-input" class="grupo-input">
+                <label for="condiciones"> Condiciones para Retirar </label>
+                <input id="condiciones" name="condiciones" type="text" value="{{data.condiciones}}" size="80">
+            </div>
+            <div id="foto-input" class="grupo-input">
+                <label for="foto-1"> Foto Donación</label>
+                <input id="foto-1" name="foto-1" type="file" accept="image/*, application/pdf" value="{{data.foto_1}}" required>
+                <input id="foto-2" name="foto-2" type="file" accept="image/*, application/pdf" value="{{data.foto_2}}">
+                <input id="foto-3" name="foto-3" type="file" accept="image/*, application/pdf" value="{{data.foto_3}}">
+                <script>   
+                    const foto1 = document.querySelector("#foto-1"),
+                            foto2 = document.querySelector("#foto-2"),
+                            foto3 = document.querySelector("#foto-3");
+
+                    foto2.disabled = true;
+                    foto3.disabled = true;
+                    
+                    foto1.onchange = (e) => {
+                        foto2.disabled = false;
+                    }
+                    foto2.onchange = (e) => {
+                        foto3.disabled = false;
+                    }
+                </script>
+                <br><small id="foto-error"> No se insertó ninguna imagen, o no todas las imágenes insertadas tienen un formato válido! </small>
+            </div>
+            <div id="nombre-input" class="grupo-input">
+                <label for="nombre">Nombre Donante</label>
+                <input id="nombre" name="nombre" type="text" minlength="3" maxlength="80" size="80" value="{{data.nombre}}" required>
+                <br><small id="nombre-error"> Nombre no válido, debe tener entre 3 y 80 caracteres! </small>
+            </div>
+            <div id="mail-input" class="grupo-input">
+                <label for="email">Email Contacto</label>
+                <input id="email" name="email" type="email" size="30" value="{{data.email}}" required>
+                <br><small id="email-error"> Mail no válido! </small>
+            </div>
+            <div id="celular-input" class="grupo-input">
+                <label for="celular">Número Contacto Celular</label>
+                <input id="celular" name="celular" type="tel" placeholder="+56 X XXXX XXXX" maxlength="15" value="{{data.celular}}" size="15">
+                <br><small id="celular-error"> Número celular no válido! </small>
+            </div>
+            {% else %}
+            <div id="region-input" class="grupo-input">
+                <label for="region"> Región</label>
+                <select id="region" name="region" required>
+                    <option value="" selected="selected"> -- Seleccione la Región -- </option>
+                </select>
+                <br><small id="region-error"> Elija una región! </small>
+            </div>
+            <div id="comuna-input" class="grupo-input">
+                <label for="comuna"> Comuna</label>
+                <select id="comuna" name="comuna" required>
+                    <option value="" selected="selected"> -- Seleccione la Comuna -- </option>
+                </select>
+                <br><small id="comuna-error"> Elija una comuna! </small>
+            </div>
+            <div id="calle-numero-input" class="grupo-input">
+                <label for="calle-numero"> Calle y Número</label>
+                <input id="calle-numero" name="calle-numero" type="text" size="80" required>
+                <br><small id="calle-error"> Primero debe insertar el nombre de la calle y luego el número de la vivienda! </small>
+            </div>
+            <div id="tipo-input" class="grupo-input">
+                <label for="tipo"> Tipo de Donación</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="" selected="selected"> Seleccione el tipo </option>
+                    <option value="fruta">Fruta</option>
+                    <option value="verdura">Verdura</option>
+                    <option value="otro">Otro</option>
+                </select>
+                <br><small id="tipo-error"> Elija el tipo de donación! </small>
+            </div>
+            <div id="cantidad-input" class="grupo-input">
+                <label for="cantidad">Cantidad</label>
+                <input id="cantidad" name="cantidad" type="text" size="10" required>
+                <br><small id="cantidad-error"> Cantidad no válida! </small>
+            </div>
+            <div id="fecha-disponibilidad-input" class="grupo-input">
+                <label for="fecha-disponibilidad">Fecha Disponibilidad</label>
+                <input id="fecha-disponibilidad" name="fecha-disponibilidad" type="text" maxlength="10" size="10" placeholder="aaaa-mm-dd" required>
+                <br><small id="fecha-error"> Fecha debe ser mayor o igual a la actual, y con formato aaaa-mm-dd! </small>
+            </div>
+            <div id="descripcion-input" class="grupo-input">
+                <label for="descripcion"> Descripción </label>
+                <input id="descripcion" name="descripcion" type="text" size="80">
+            </div>
+            <div id="condiciones-input" class="grupo-input">
+                <label for="condiciones"> Condiciones para Retirar </label>
+                <input id="condiciones" name="condiciones" type="text" size="80">
+            </div>
+            <div id="foto-input" class="grupo-input">
+                <label for="foto-1"> Foto Donación</label>
+                <input id="foto-1" name="foto-1" type="file" accept="image/*, application/pdf" required>
+                <input id="foto-2" name="foto-2" type="file" accept="image/*, application/pdf">
+                <input id="foto-3" name="foto-3" type="file" accept="image/*, application/pdf">
+                <script>   
+                    const foto1 = document.querySelector("#foto-1"),
+                            foto2 = document.querySelector("#foto-2"),
+                            foto3 = document.querySelector("#foto-3");
+
+                    foto2.disabled = true;
+                    foto3.disabled = true;
+                    
+                    foto1.onchange = (e) => {
+                        foto2.disabled = false;
+                    }
+                    foto2.onchange = (e) => {
+                        foto3.disabled = false;
+                    }
+                </script>
+                <br><small id="foto-error"> No se insertó ninguna imagen, o no todas las imágenes insertadas tienen un formato válido! </small>
+            </div>
+            <div id="nombre-input" class="grupo-input">
+                <label for="nombre">Nombre Donante</label>
+                <input id="nombre" name="nombre" type="text" minlength="3" maxlength="80" size="80" required>
+                <br><small id="nombre-error"> Nombre no válido, debe tener entre 3 y 80 caracteres! </small>
+            </div>
+            <div id="mail-input" class="grupo-input">
+                <label for="email">Email Contacto</label>
+                <input id="email" name="email" type="email" size="30" required>
+                <br><small id="email-error"> Mail no válido! </small>
+            </div>
+            <div id="celular-input" class="grupo-input">
+                <label for="celular">Número Contacto Celular</label>
+                <input id="celular" name="celular" type="tel" placeholder="+56 X XXXX XXXX" maxlength="15" size="15">
+                <br><small id="celular-error"> Número celular no válido! </small>
+            </div>
+            {% endif %}
+            <div class="botones">
+                <button type="button" id="envio" onclick="validarForm()">
+                Agregar Donación
+                </button>
+            </div>
+        </form>
+      </div>
+{% endblock%}
+{% block scripts %}
+    <script src="{{ url_for('static', filename='js/regionesycomunas.js') }}"></script> 
+    <script src="{{ url_for('static', filename='js/validador_donacion.js') }}"></script>
+{% endblock scripts %}

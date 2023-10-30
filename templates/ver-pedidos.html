@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/table_pedidos.css') }}">
+{% endblock %}
+
+{% block title %} Ver Pedidos {% endblock %}
+
+{% block content %}
+    <div class="div-table-pedidos">
+        <table class="table-pedidos">
+            <tr>
+                <th>Comuna</th>
+                <th>Tipo</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Nombre Solicitante</th>
+            </tr>
+            {%if data %}
+                {% for pedido in data %}
+                <tr onclick="window.location.href='informacion-pedido.html?id={{ pedido.id }}';">
+                    <td>{{pedido.comuna}}</td>
+                    <td>{{pedido.tipo}}</td>
+                    <td>{{pedido.descripcion}}</td>
+                    <td>{{pedido.cantidad}}</td>
+                    <td>{{pedido.nombre}}</td>
+                </tr>
+                {% endfor %}
+            {%endif%}
+        </table>
+        <form action="/ver-pedidos" method="GET">
+            <input type="hidden" name="page" value="{{ page - 1 }}">
+            <button type="submit" {% if page < 2 %}disabled{% endif %}>Página anterior</button>
+        </form>
+        <form action="/ver-pedidos" method="GET">
+            <input type="hidden" name="page" value="{{ page + 1 }}">
+            <button type="submit" {% if remaining < 5 %}disabled{% endif %}>Siguiente página</button>
+        </form>
+    </div>
+    <div class="redirect-index">
+        <button type="button" class="return-to-index" onclick="window.location.href='inicio';" > Volver al Inicio</button>
+    </div>
++{% endblock %}

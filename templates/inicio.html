@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block preScripts %}
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.1/leaflet.markercluster.js"></script>
+{% endblock preScripts %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/inicio.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css">
+{% endblock css %}
+
+{% block content %}
+<div class="portrait_div">
+    <div id="map" style="height: 500px;"></div>
+    <br>
+    <div class="legend-container">
+        <div id="map-legend">
+            <div class="legend-item">
+                <div id="donacion-legend"></div>
+                <span> Donación </span>
+            </div>
+            <div class="legend-item">
+                <div id="pedido-legend"></div>
+                <span> Pedido </span>
+            </div>
+            <button id="locate-button" class="center-button">Centrar en mi ubicación</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var map = L.map('map').setView([-34.6037, -58.3816], 13);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
+        maxZoom: 18,
+    }).addTo(map);
+
+    var markerClusterGroup = L.markerClusterGroup();
+    var donations = [
+        {% for donation in donaciones %}
+        {
+            id: '{{ donation.id }}',
+            calle: '{{ donation.calle }}',
+            tipo: '{{ donation.tipo }}',
+            cantidad: '{{ donation.cantidad }}',
+            fecha: '{{ donation.fecha }}',
+            email: '{{ donation.email }}',
+            lng: '{{donation.lng}}',
+            lat: '{{donation.lat}}'
+        },
+        {% endfor %}
+    ];
+    var redIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    donations.forEach(function(donation) {
+        var marker = L.marker([donation.lat, donation.lng], { icon: redIcon }).bindPopup(
+            "ID: " + donation.id + "<br>" +
+            "Calle: " + donation.calle + "<br>" +
+            "Tipo: " + donation.tipo + "<br>" +
+            "Cantidad: " + donation.cantidad + "<br>" +
+            "Fecha: " + donation.fecha + "<br>" +
+            "Email: " + donation.email
+        );
+
+        markerClusterGroup.addLayer(marker);
+    });
+
+    var orders = [
+        {% for order in pedidos %}
+        {
+            id: '{{ order.id }}',
+            tipo: '{{ order.tipo }}',
+            cantidad: '{{ order.cantidad }}',
+            email: '{{ order.email }}',
+            lng: '{{order.lng}}',
+            lat: '{{order.lat}}'
+        },
+        {% endfor %}
+    ];
+    var purpleIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    });
+
+    orders.forEach(function(order) {
+        var marker = L.marker([order.lat, order.lng], { icon: purpleIcon }).bindPopup(
+            "ID: " + order.id + "<br>" +
+            "Tipo: " + order.tipo + "<br>" +
+            "Cantidad: " + order.cantidad + "<br>" +
+            "Email: " + order.email
+        );
+
+        markerClusterGroup.addLayer(marker);
+    });
+
+    map.addLayer(markerClusterGroup);
+
+    // Agregar el botón para centrar en la ubicación
+    var locateButton = document.getElementById('locate-button');
+    locateButton.addEventListener('click', function() {
+        map.locate({ setView: true });
+    });
+
+    // Manejar eventos de localización
+    map.on('locationerror', function (e) {
+        alert("Se ha denegado el acceso a la ubicación.");
+    });
+</script>
+{% endblock content %}

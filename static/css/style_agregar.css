@@ -1,0 +1,41 @@
+.container {
+    border: 1px solid black;
+    border-radius: 12px;
+    height: 50%;
+    max-width: fit-content; 
+    margin: 2% auto;
+    padding: 2rem;
+    padding-top: .5rem;
+    background-color: rgb(216, 216, 216);
+  }
+
+  .formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .grupo-input {
+    flex-direction: column;
+  }
+
+  .botones {
+    display: flex;
+    justify-content: center;
+  }
+
+  #envio {
+    background-color: #944894;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 20px;
+    padding: 2% 5%;
+    width: 50%;
+    cursor: pointer;
+  }
+
+  small{
+    display: none;
+    color: rgb(133, 6, 6);
+  }
